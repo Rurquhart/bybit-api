@@ -1,6 +1,6 @@
-module github.com/frankrap/bybit-api
+module github.com/rurquhart/bybit-api
 
-go 1.13
+go 1.17
 
 require (
 	github.com/chuckpreslar/emission v0.0.0-20170206194824-a7ddd980baf9
