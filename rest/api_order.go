@@ -8,7 +8,7 @@ import (
 
 func (b *ByBit) CreateOrderV2(side string, orderType string, price float64,
 	qty int, timeInForce string, takeProfit float64, stopLoss float64, reduceOnly bool,
-	closeOnTrigger bool, orderLinkID string, symbol string) (result OrderV2, err error) {
+	closeOnTrigger bool, orderLinkID string, symbol string, linear bool) (result OrderV2, err error) {
 	var cResult CreateOrderV2Result
 	params := map[string]interface{}{}
 	params["side"] = side
@@ -35,7 +35,16 @@ func (b *ByBit) CreateOrderV2(side string, orderType string, price float64,
 		params["order_link_id"] = orderLinkID
 	}
 	var resp []byte
-	resp, err = b.SignedRequest(http.MethodPost, "v2/private/order/create", params, &cResult)
+
+	var url string
+	switch linear {
+	case true:
+		url = "private/linear/order/create"
+	case false:
+		url = "v2/private/order/create"
+	}
+
+	resp, err = b.SignedRequest(http.MethodPost, url, params, &cResult)
 	if err != nil {
 		return
 	}
